@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -7,34 +6,36 @@ public class Bullet : MonoBehaviour
     [SerializeField] Rigidbody2D rb;
     [SerializeField] float bulletLifetime = 15f;
     [SerializeField] float damage = 1f;
-    
+
+    private Vector2 direction = Vector2.right;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-    }
-    void Start()
-    {
-        Move();
         Destroy(gameObject, bulletLifetime);
-        
     }
-
-
-    void Move()
+    private void Start()
     {
-        rb.linearVelocity = transform.right * speed;
-       
+        BulletMove();
     }
+    public void SetDirection(Vector2 dir)
+    {
+        direction = dir.normalized;
+    }
+
+    
+
+    private void BulletMove()
+    {
+        rb.linearVelocity = direction * speed;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        
-         if (collision.gameObject.CompareTag("Enemy")) 
+        if (collision.gameObject.CompareTag("Enemy"))
         {
             collision.gameObject.GetComponent<EnemyHealth>().TakeDamage(damage);
             Destroy(gameObject);
         }
     }
-
-    
 }

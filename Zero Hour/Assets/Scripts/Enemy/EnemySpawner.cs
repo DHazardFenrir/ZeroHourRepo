@@ -36,7 +36,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void TrySpawnAt(Vector2 position)
     {
-       LayerMask enemyLayer = LayerMask.GetMask("Enemy"); // el nombre de tu layer de enemigos
+       LayerMask enemyLayer = LayerMask.GetMask("Enemy");
     Collider2D hit = Physics2D.OverlapCircle(position, overlapCheckRadius, enemyLayer);
     
     if (hit == null)
