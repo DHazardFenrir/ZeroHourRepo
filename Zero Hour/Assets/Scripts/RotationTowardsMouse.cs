@@ -14,28 +14,22 @@ public class RotationTowardsMouse : MonoBehaviour
     void Update()
     {
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = new Vector2(
-            mousePosition.x - transform.position.x,
-            mousePosition.y - transform.position.y
-        );
 
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        // 1. Calculamos la dirección RELATIVA al arma
+        Vector3 localDirection = transform.parent.InverseTransformPoint(mousePosition) - transform.localPosition;
 
-        Vector2 movement = pMove.MoveDirection;
-       
+        // 2. Calculamos el ángulo basándonos en esa dirección local
+        float angle = Mathf.Atan2(localDirection.y, localDirection.x) * Mathf.Rad2Deg;
+
+        // 3. El moveAngle siempre será 0 porque estamos hablando en "idioma local" del arma
+        // Si el padre mira a la izquierda, para el arma (localmente) eso sigue siendo "adelante"
         float moveAngle = 0f;
-        if (movement.x > 0) moveAngle = 0f;
-        else if (movement.x < 0) moveAngle = 180f;
-        else if (movement.y > 0) moveAngle = 90f;
-        else if (movement.y < 0) moveAngle = 270f;
 
         float delta = Mathf.DeltaAngle(moveAngle, angle);
         delta = Mathf.Clamp(delta, -90f, 90f);
         angle = moveAngle + delta;
 
-        if (transform.parent.localScale.x < 0)
-            angle = -angle;
-
-        transform.rotation = Quaternion.Euler(0, 0, angle);
+        // 4. Aplicamos la rotación
+        transform.localRotation = Quaternion.Euler(0, 0, angle);
     }
 }

@@ -9,22 +9,14 @@ public class EnemyHealth : MonoBehaviour
  [SerializeField] float health = 5f;
  [SerializeField] SpriteRenderer sr;
   public CinemachineImpulseSource impulseSource;
+    private EnemySpawner spawner;
+    public void SetSpawner(EnemySpawner s) => spawner = s;
  
     void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 
    
   IEnumerator FlashDamage()
@@ -52,7 +44,7 @@ public class EnemyHealth : MonoBehaviour
         
         if(health <= 0)
         {
-            
+            spawner.EnemyDied(gameObject);
             Destroy(this.gameObject);
         }
     }

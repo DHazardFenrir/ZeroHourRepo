@@ -1,13 +1,21 @@
+using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Timeline;
 
 public class EnemySpawner : MonoBehaviour
 {
-   
+
     [SerializeField] private BoxCollider2D spawnArea;
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private int enemiesPerCorner = 1;
     [SerializeField] private float overlapCheckRadius = 0.5f;
+    private List<GameObject> activeEnemies = new List<GameObject>();
+    private bool spawnKey = false;
+    [SerializeField] GameObject keyPrefab;
+    [SerializeField] Transform keyTransform;
+
 
     private Vector2[] GetCorners()
     {
@@ -41,10 +49,26 @@ public class EnemySpawner : MonoBehaviour
     
     if (hit == null)
     {
-        Instantiate(enemyPrefab, position, Quaternion.identity);
+       GameObject enemy = Instantiate(enemyPrefab, position, Quaternion.identity);
+            activeEnemies.Add(enemy);
+            enemy.GetComponent<EnemyHealth>().SetSpawner(this);
     }
     }
-   
+   public void EnemyDied(GameObject enemy)
+    {
+        activeEnemies.Remove(enemy);
+        if(activeEnemies.Count <= 0 && !spawnKey)
+        {
+            SpawnKey();
+        }
+    }
+
+    void SpawnKey()
+    {
+        spawnKey = true;
+        Instantiate(keyPrefab, keyTransform.position, Quaternion.identity);
+        Debug.Log("Sala despejada");
+    }
     void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("Player in");

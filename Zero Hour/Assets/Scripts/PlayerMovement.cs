@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] GameObject shootPoint;
     [SerializeField] float lastAttackTime = 0f;
     [SerializeField] float fireRate = 0.5f;
-
+    public bool playerHasKey = false;
     public Vector2 MoveDirection { get; private set; }
 
     void Start()
@@ -50,12 +50,11 @@ public class PlayerMovement : MonoBehaviour
 
     void Shoot()
     {
-        GameObject bullet = Instantiate(bulletObj, shootPoint.transform.position, shootPoint.transform.rotation);
+        Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 shootDir = (mouseWorld - shootPoint.transform.position).normalized;
 
-        
-        Vector2 shootDir = shootPoint.transform.right * Mathf.Sign(transform.localScale.x);
+        GameObject bullet = Instantiate(bulletObj, shootPoint.transform.position, Quaternion.identity);
         bullet.GetComponent<Bullet>().SetDirection(shootDir);
-
         Physics2D.IgnoreCollision(
             bullet.GetComponent<Collider2D>(),
             GetComponent<Collider2D>()
