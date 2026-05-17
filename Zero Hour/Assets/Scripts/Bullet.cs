@@ -8,24 +8,35 @@ public class Bullet : MonoBehaviour
     [SerializeField] float bulletLifetime = 15f;
     [SerializeField] float damage = 1f;
 
-    private Vector2 moveDirection;
+    private Vector2 direction;
 
     void Awake()
     {
-        Destroy(gameObject, bulletLifetime);
-    }
+    Debug.Log("Parent de la bala: " + (transform.parent != null ? transform.parent.name : "ninguno"));
+    Destroy(gameObject, bulletLifetime);
+    }   
 
     public void SetDirection(Vector2 dir)
-    {
-        moveDirection = dir.normalized;
-    }
+{
+    direction = dir.normalized;
+    Debug.Log("SetDirection llamado con: " + direction);
+}
 
-    void Update()
-    {
-        transform.Translate(moveDirection * speed * Time.deltaTime, Space.World);
-    }
+void Update()
+{
 
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    if (direction == Vector2.zero)
+        Debug.Log("direction es ZERO en update");
+    else
+        Debug.Log("Moviendo hacia: " + direction);
+        
+    transform.Translate(direction * speed * Time.deltaTime, Space.World);
+
+}
+
+
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
@@ -33,6 +44,7 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
         }
     }
+   
 
 
 }

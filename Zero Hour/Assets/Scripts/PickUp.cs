@@ -7,6 +7,7 @@ public class PickUp : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             Inventory.hasKey= true;
+            Destroy(gameObject);
 
         }
     }

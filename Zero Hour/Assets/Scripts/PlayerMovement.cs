@@ -50,14 +50,17 @@ public class PlayerMovement : MonoBehaviour
 
     void Shoot()
     {
-        Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 shootDir = (mouseWorld - shootPoint.transform.position).normalized;
+        GameObject bullet = Instantiate(bulletObj, shootPoint.transform.position, shootPoint.transform.rotation);
+      
+       
 
-        GameObject bullet = Instantiate(bulletObj, shootPoint.transform.position, Quaternion.identity);
+        
+        Vector2 shootDir = shootPoint.transform.right * Mathf.Sign(transform.localScale.x);
+      
         bullet.GetComponent<Bullet>().SetDirection(shootDir);
+
         Physics2D.IgnoreCollision(
             bullet.GetComponent<Collider2D>(),
-            GetComponent<Collider2D>()
-        );
+            GetComponent<Collider2D>());
     }
 }

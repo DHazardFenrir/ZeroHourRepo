@@ -83,7 +83,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_MaskInteraction: 0
   m_Sprite: {fileID: -3608795927983523270, guid: 8b16ae9a67b0b4980a3ed5b4376d84d9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -118,7 +118,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
@@ -183,6 +183,9 @@ MonoBehaviour:
   rb: {fileID: 278540267600029535}
   speed: 1
   playerTransform: {fileID: 0}
+  minDistance: 1.5
+  tacklePower: 10
+  attackCooldown: 2
 --- !u!114 &7224753208559737341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,3 +199,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   health: 5
+  sr: {fileID: 0}
+  impulseSource: {fileID: 0}

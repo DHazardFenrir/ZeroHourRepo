@@ -15,6 +15,8 @@ public class EnemySpawner : MonoBehaviour
     private bool spawnKey = false;
     [SerializeField] GameObject keyPrefab;
     [SerializeField] Transform keyTransform;
+    [SerializeField] GameObject exit;
+    [SerializeField] GameObject block;
 
 
     private Vector2[] GetCorners()
@@ -67,6 +69,9 @@ public class EnemySpawner : MonoBehaviour
     {
         spawnKey = true;
         Instantiate(keyPrefab, keyTransform.position, Quaternion.identity);
+        Debug.Log("Llave spawn");
+        exit.SetActive(true);
+        block.SetActive(false);
         Debug.Log("Sala despejada");
     }
     void OnTriggerEnter2D(Collider2D collision)
@@ -76,5 +81,6 @@ public class EnemySpawner : MonoBehaviour
         {
             SpawnEnemies();
         }
+        this.gameObject.GetComponent<BoxCollider2D>().enabled = false;
     }
 }

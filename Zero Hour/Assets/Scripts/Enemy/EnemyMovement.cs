@@ -17,6 +17,7 @@ public class EnemyMovement : MonoBehaviour
 
     void Awake() {
         rb = GetComponent<Rigidbody2D>();
+        playerTransform = FindAnyObjectByType<PlayerMovement>().transform;
     }
 
     void FixedUpdate() {

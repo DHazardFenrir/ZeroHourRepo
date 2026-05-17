@@ -15,6 +15,7 @@ public class EnemyHealth : MonoBehaviour
     void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
+        impulseSource  = GameObject.FindWithTag("Player").GetComponent<CinemachineImpulseSource>();
     }
    
 
@@ -40,13 +41,18 @@ public class EnemyHealth : MonoBehaviour
         health-=damage;
         impulseSource.GenerateImpulse();
         StartCoroutine(FlashDamage());
-       
-        
-        if(health <= 0)
+       if(health <= 0)
         {
+            if(spawner != null)
+            {
             spawner.EnemyDied(gameObject);
+            Debug.Log("Enemigo sacado de la lista");
+            } 
             Destroy(this.gameObject);
         }
+       
+        
+        
     }
 }
 
