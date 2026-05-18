@@ -52,9 +52,6 @@ public class PlayerMovement : MonoBehaviour
     {
         GameObject bullet = Instantiate(bulletObj, shootPoint.transform.position, shootPoint.transform.rotation);
       
-       
-
-        
         Vector2 shootDir = shootPoint.transform.right * Mathf.Sign(transform.localScale.x);
       
         bullet.GetComponent<Bullet>().SetDirection(shootDir);

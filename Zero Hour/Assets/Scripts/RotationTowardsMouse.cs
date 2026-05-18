@@ -2,12 +2,10 @@ using UnityEngine;
 
 public class RotationTowardsMouse : MonoBehaviour
 {
-    [SerializeField] PlayerMovement pMove;
     [SerializeField] private SpriteRenderer sr;
 
     void Awake()
     {
-        pMove = GetComponentInParent<PlayerMovement>();
         sr = GetComponent<SpriteRenderer>();
     }
 
@@ -16,18 +14,12 @@ public class RotationTowardsMouse : MonoBehaviour
        
 
    Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-
-Vector3 localDirection = transform.parent.InverseTransformPoint(mousePosition) - transform.localPosition;
-
-float angle = Mathf.Atan2(localDirection.y, localDirection.x) * Mathf.Rad2Deg;
-
-
-float moveAngle = 0f;
-
-float delta = Mathf.DeltaAngle(moveAngle, angle);
-delta = Mathf.Clamp(delta, -90f, 90f);
-angle = moveAngle + delta;
+   Vector3 localDirection = transform.parent.InverseTransformPoint(mousePosition) - transform.localPosition;
+   float angle = Mathf.Atan2(localDirection.y, localDirection.x) * Mathf.Rad2Deg;
+   float moveAngle = 0f;
+   float delta = Mathf.DeltaAngle(moveAngle, angle);
+   delta = Mathf.Clamp(delta, -90f, 90f);
+   angle = moveAngle + delta;
 
 
 transform.localRotation = Quaternion.Euler(0, 0, angle);
