@@ -9,6 +9,7 @@ public class EnemyHealth : MonoBehaviour
  [SerializeField] float health = 5f;
  [SerializeField] SpriteRenderer sr;
   public CinemachineImpulseSource impulseSource;
+  [SerializeField] ParticleSystem bloodParticles;
     private EnemySpawner spawner;
     public void SetSpawner(EnemySpawner s) => spawner = s;
  
@@ -16,6 +17,7 @@ public class EnemyHealth : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         impulseSource  = GameObject.FindWithTag("Player").GetComponent<CinemachineImpulseSource>();
+         bloodParticles = GetComponentInChildren<ParticleSystem>();
     }
    
 
@@ -31,7 +33,12 @@ public class EnemyHealth : MonoBehaviour
        
        
     }
-
+   
+   void Die()
+    {
+        GameManager.Instance.EnemyDied(gameObject);
+         Destroy(this.gameObject);
+    }
     void ScaleDamage()
     {
         transform.localScale = new Vector3(1, 0.8f,1f);
@@ -41,14 +48,17 @@ public class EnemyHealth : MonoBehaviour
         health-=damage;
         impulseSource.GenerateImpulse();
         StartCoroutine(FlashDamage());
+         bloodParticles?.Play();
+       
        if(health <= 0)
         {
             if(spawner != null)
             {
-            spawner.EnemyDied(gameObject);
-            Debug.Log("Enemigo sacado de la lista");
+                Die();
+           
             } 
-            Destroy(this.gameObject);
+            Destroy(gameObject);
+           
         }
        
         

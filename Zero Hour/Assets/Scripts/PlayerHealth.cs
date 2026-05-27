@@ -14,13 +14,17 @@ public class PlayerHealth : MonoBehaviour
     public SpriteRenderer sr;
     [SerializeField]private Color tmp;
      public Image[] healthBar;
-     public 
+     [SerializeField] ParticleSystem bloodParticles;
+     
+     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         currentHealth = maxHealth;
         sr = GetComponent<SpriteRenderer>();
         tmp = sr.color;
+       
+        GameManager.Instance.RegisterPlayer(this);
     }
 
     // Update is called once per frame
@@ -56,16 +60,18 @@ IEnumerator Transparent()
     tmp.a = 1f;
     sr.color = tmp;
     }
-     public void TakeDamage(float damage)
+     public  void TakeDamage(float damage)
     {
         if(invencibilityTimer >0) return;
+        bloodParticles.Play();
         currentHealth-=damage;
         impulseSourcePlayer.GenerateImpulse();
          invencibilityTimer = invencibilityDuration;
          StartCoroutine(Transparent());
-        if(currentHealth <= 0)
-        { //play death animation
-            Destroy(this.gameObject);
+        if (currentHealth <= 0)
+        {
+        GameManager.Instance.OnPlayerDied();
+        Destroy(gameObject);
         }
     }
 }

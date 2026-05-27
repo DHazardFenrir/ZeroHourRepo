@@ -11,12 +11,14 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private int enemiesPerCorner = 1;
     [SerializeField] private float overlapCheckRadius = 0.5f;
-    private List<GameObject> activeEnemies = new List<GameObject>();
-    private bool spawnKey = false;
+   
+   
     [SerializeField] GameObject keyPrefab;
     [SerializeField] Transform keyTransform;
-    [SerializeField] GameObject exit;
-    [SerializeField] GameObject block;
+    [SerializeField] GameObject[] powerUpPrefabs;
+    [SerializeField] float powerUpOffset = 1f;
+   
+   
 
 
     private Vector2[] GetCorners()
@@ -44,6 +46,17 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
+    public void OnRoomCleared()
+    {
+        Instantiate(keyPrefab, keyTransform.position, Quaternion.identity);
+
+        int randomIndex = Random.Range(0, powerUpPrefabs.Length);
+        Vector3 powerUpPos = keyTransform.position + Vector3.right * powerUpOffset;
+        Instantiate(powerUpPrefabs[randomIndex], powerUpPos, Quaternion.identity);
+        GameManager.Instance.activeBlock.gameObject.SetActive(false);
+        GameManager.Instance.door.gameObject.GetComponent<BoxCollider2D>().enabled = true;
+        this.gameObject.SetActive(false);
+    }
     private void TrySpawnAt(Vector2 position)
     {
        LayerMask enemyLayer = LayerMask.GetMask("Enemy");
@@ -52,30 +65,19 @@ public class EnemySpawner : MonoBehaviour
     if (hit == null)
     {
        GameObject enemy = Instantiate(enemyPrefab, position, Quaternion.identity);
-            activeEnemies.Add(enemy);
+           GameManager.Instance.activeEnemies.Add(enemy);
+           
             enemy.GetComponent<EnemyHealth>().SetSpawner(this);
     }
     }
-   public void EnemyDied(GameObject enemy)
-    {
-        activeEnemies.Remove(enemy);
-        if(activeEnemies.Count <= 0 && !spawnKey)
-        {
-            SpawnKey();
-        }
-    }
+   
+    
 
-    void SpawnKey()
-    {
-        spawnKey = true;
-        Instantiate(keyPrefab, keyTransform.position, Quaternion.identity);
-        Debug.Log("Llave spawn");
-        exit.SetActive(true);
-        block.SetActive(false);
-        Debug.Log("Sala despejada");
-    }
+  
     void OnTriggerEnter2D(Collider2D collision)
     {
+        GameManager.Instance.isCleared = false;
+        GameManager.Instance.activeSpawner = this;
         Debug.Log("Player in");
         if (collision.gameObject.CompareTag("Player"))
         {

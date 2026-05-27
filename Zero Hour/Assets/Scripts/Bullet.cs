@@ -34,17 +34,25 @@ void Update()
     transform.Translate(direction * speed * Time.deltaTime, Space.World);
 
 }
+    public void SetDamage(float d)
+    {
+        damage = d;
+    }
 
-
+   
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            collision.gameObject.GetComponent<EnemyHealth>().TakeDamage(damage);
-            Destroy(gameObject);
-        }
+        if (collision.gameObject.CompareTag("Enemy") )
+    {
+        collision.gameObject.GetComponent<EnemyHealth>().TakeDamage(damage);
+        Destroy(gameObject);
     }
-   
+        if (collision.gameObject.CompareTag("Player"))
+    {
+        collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(damage);
+        Destroy(gameObject);
+    }
+    }
 
 
 }
