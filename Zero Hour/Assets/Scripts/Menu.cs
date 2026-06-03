@@ -9,6 +9,8 @@ public class Menu : MonoBehaviour
     [SerializeField] GameObject startMenu;
     [SerializeField] GameObject dieMenu;
     [SerializeField] Button startButton;
+    [SerializeField] GameObject playerHUD;
+    [SerializeField] GameObject bossHUD;   
     [SerializeField] Button exitButton;
     [SerializeField] Button retryButton;
     public GameObject scene;
@@ -24,6 +26,7 @@ public class Menu : MonoBehaviour
     public void StartGame()
     {
         startMenu.SetActive(false);
+        playerHUD.SetActive(true);
         dieMenu.SetActive(false);
         scene.SetActive(true);
         Time.timeScale = 1f;
@@ -37,7 +40,7 @@ public class Menu : MonoBehaviour
   public void ShowGameOver()
     {
         startMenu.SetActive(false);
-        //hud.SetActive(false);
+        playerHUD.SetActive(false);
         dieMenu.SetActive(true);
         Time.timeScale = 0f;
     }

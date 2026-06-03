@@ -1,6 +1,5 @@
-using UnityEngine;
-
 public static class Inventory
 {
-    public static bool hasKey = false;
+    public static bool hasNormalKey = false;
+    public static bool hasBossKey = false;
 }

@@ -18,10 +18,10 @@ public class Restore : MonoBehaviour
 
      IEnumerator BlockAfterTimer()
     {
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(1.5f);
         foreach(var col in interior)
             {
-                col.enabled = false;
+                col.isTrigger = true;
             }
 
             interiorTilemap.gameObject.SetActive(false);

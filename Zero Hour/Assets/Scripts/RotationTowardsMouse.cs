@@ -18,7 +18,7 @@ public class RotationTowardsMouse : MonoBehaviour
    float angle = Mathf.Atan2(localDirection.y, localDirection.x) * Mathf.Rad2Deg;
    float moveAngle = 0f;
    float delta = Mathf.DeltaAngle(moveAngle, angle);
-   delta = Mathf.Clamp(delta, -90f, 90f);
+   delta = Mathf.Clamp(delta, -120f, 120f);
    angle = moveAngle + delta;
 
 

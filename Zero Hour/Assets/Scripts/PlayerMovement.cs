@@ -6,7 +6,14 @@ public enum FireMode
     Double,
     Triple,
     Fan,
-    Charged
+    Charged,
+   
+}
+
+public enum HealthPowerUp
+{
+     RestoreHealth,
+    IncreaseHealth
 }
 
 public class PlayerMovement : MonoBehaviour
@@ -25,7 +32,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float fireRate;
 
     private FireMode currentFireMode = FireMode.Single;
-    public bool playerHasKey = false;
+    public bool hasNormalKey = false;
+    public bool hasBossKey = false;
     public Vector2 MoveDirection { get; private set; }
     
     [SerializeField] ParticleSystem dustParticles;
@@ -61,7 +69,12 @@ public class PlayerMovement : MonoBehaviour
         
         fireRate = mode == FireMode.Charged ? chargedFireRate : normalFireRate;
     }
-
+    
+    public void SynchronizeInventory()
+{
+    hasNormalKey = Inventory.hasNormalKey;
+    hasBossKey = Inventory.hasBossKey;
+}
     void SpawnBullet(float angleOffset, float damage)
     {
        

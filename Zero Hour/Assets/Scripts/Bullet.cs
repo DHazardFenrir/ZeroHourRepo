@@ -52,6 +52,12 @@ void Update()
         collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(damage);
         Destroy(gameObject);
     }
+
+     if (collision.gameObject.CompareTag("Boss") )
+    {
+        collision.gameObject.GetComponent<BossHealth>().TakeDamage(damage);
+        Destroy(gameObject);
+    }
     }
 
 

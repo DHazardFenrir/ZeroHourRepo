@@ -6,8 +6,8 @@ using UnityEngine.Rendering;
 using System.Collections;
 public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField] float maxHealth = 5;
-    [SerializeField] float currentHealth;
+    [SerializeField] public float maxHealth = 5;
+    [SerializeField] public float currentHealth;
     [SerializeField] float invencibilityDuration = 0.5f;
     private float invencibilityTimer;
     public CinemachineImpulseSource impulseSourcePlayer;
@@ -39,17 +39,48 @@ public class PlayerHealth : MonoBehaviour
             Debug.Log(tmp.a);
         }
        
-
-        for(int i =0; i < healthBar.Length; i++)
+      
+        for(int i = 0; i < healthBar.Length; i++)
+    {
+       
+        if (i < maxHealth)
         {
-            if(i < currentHealth-1)
+            healthBar[i].gameObject.SetActive(true);
+
+            
+            healthBar[i].enabled = i < currentHealth;
+        }
+        else
+        {
+            
+            healthBar[i].gameObject.SetActive(false);
+        }
+    }
+    }
+ public void SetHealth(HealthPowerUp pu, float healthAmount)
+    {
+        switch (pu)
+        {
+            case HealthPowerUp.IncreaseHealth:
+             maxHealth += healthAmount;
+            
+            if (maxHealth > healthBar.Length)
             {
-                healthBar[i].enabled = true; 
-            }else if (i > currentHealth-1)
-            {
-                healthBar[i].enabled = false;
+                maxHealth = healthBar.Length;
             }
             
+            currentHealth = Mathf.Min(currentHealth + healthAmount, maxHealth);
+            Debug.Log($"Vida máxima incrementada a: {maxHealth}");
+             break;
+
+             case HealthPowerUp.RestoreHealth:
+            currentHealth += healthAmount;
+            if (currentHealth >= maxHealth)
+            {
+                currentHealth = maxHealth;
+                Debug.Log("Vida máxima alcanzada por curación");
+            }
+             break;
         }
     }
 IEnumerator Transparent()

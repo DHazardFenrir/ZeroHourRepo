@@ -3,28 +3,22 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-    [SerializeField]BoxCollider2D triggerBox;
-    [SerializeField]GameObject block;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] BoxCollider2D triggerBox;
+    [SerializeField] GameObject block;
+    [SerializeField] GameObject interiorDoor;
+
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") && !GameManager.Instance.isCleared)
-        {
+        if (collision.gameObject.CompareTag("Player"))
             StartCoroutine(BlockAfterTimer());
-
-        }
-
     }
 
     IEnumerator BlockAfterTimer()
     {
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(1.5f);
         triggerBox.isTrigger = false;
         block.SetActive(true);
         GameManager.Instance.activeBlock = this;
-        
+        interiorDoor.SetActive(true);
     }
-
-   
-
 }
